@@ -19,5 +19,5 @@ public class TaskStatus {
     private String name;
 
     @ManyToMany(mappedBy = "availableTaskStatuses")
-    List<TaskType> taskTypes;
+    private List<TaskType> taskTypes;
 }

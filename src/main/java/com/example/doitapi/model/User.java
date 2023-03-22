@@ -28,17 +28,17 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    List<ProjectAssignment> projectAssigments;
+    private List<ProjectAssignment> projectAssigments;
 
     @OneToMany(mappedBy = "assignee")
-    List<Task> assignedTasks;
+    private List<Task> assignedTasks;
 
     @OneToMany(mappedBy = "reporter")
-    List<Task> reportedTasks;
+    private List<Task> reportedTasks;
 
     @OneToMany(mappedBy = "author")
-    List<Comment> comments;
+    private List<Comment> comments;
 
     @OneToMany(mappedBy = "author")
-    List<File> files;
+    private List<File> files;
 }

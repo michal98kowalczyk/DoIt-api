@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,23 +23,34 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    Project project;
+    private Project project;
 
     @ManyToOne
     @JoinColumn(name = "assignee_id")
-    User assignee;
+    private User assignee;
 
     @ManyToOne
     @JoinColumn(name = "reporter_id")
-    User reporter;
+    private User reporter;
 
-    String type;
+    private String type;
 
-    String status;
-
-    @OneToMany(mappedBy = "task")
-    List<Comment> comments;
+    private String status;
 
     @OneToMany(mappedBy = "task")
-    List<File> files;
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "task")
+    private List<File> files;
+
+    @Temporal(TemporalType.DATE)
+    private Date fixVersion;
+
+    @OneToOne
+    @JoinColumn(name = "sprint_id", referencedColumnName = "id")
+    private Sprint sprint;
+
+    @ManyToOne
+    @JoinColumn(name = "release_id")
+    private Release release;
 }

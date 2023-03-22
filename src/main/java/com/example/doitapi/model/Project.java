@@ -19,16 +19,24 @@ public class Project {
     private String name;
 
     @OneToMany(mappedBy = "project")
-    List<ProjectAssignment> projectAssignmentList;
+    private List<ProjectAssignment> projectAssignmentList;
 
     @ManyToMany
     @JoinTable(
             name = "project_task_types",
             joinColumns = @JoinColumn(name = "task_type_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))
-    List<TaskType> availableTaskTypes;
+    private List<TaskType> availableTaskTypes;
 
     @OneToMany(mappedBy = "project")
-    List<Task> tasks;
+    private List<Task> tasks;
+
+    @OneToMany(mappedBy = "project")
+    private List<Sprint> sprints;
+
+    private Boolean isSprintsApplicable;
+
+    @OneToMany(mappedBy = "project")
+    private List<Release> releases;
 
 }

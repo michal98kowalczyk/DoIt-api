@@ -17,11 +17,11 @@ public class File {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    User author;
+    private User author;
 
     @ManyToOne
     @JoinColumn(name = "task_id")
-    Task task;
+    private Task task;
 
     @Lob
     private byte[] content;

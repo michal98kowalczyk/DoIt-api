@@ -19,13 +19,13 @@ public class TaskType {
     private String name;
 
     @ManyToMany(mappedBy = "availableTaskTypes")
-    List<Project> projects;
+    private List<Project> projects;
 
     @ManyToMany
     @JoinTable(
             name = "task_type_statuses",
             joinColumns = @JoinColumn(name = "task_type_id"),
             inverseJoinColumns = @JoinColumn(name = "task_status_id"))
-    List<TaskStatus> availableTaskStatuses;
+    private List<TaskStatus> availableTaskStatuses;
 
 }
