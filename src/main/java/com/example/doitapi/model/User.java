@@ -17,15 +17,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @Column(nullable = false, unique = true, length = 45)
     private String username;
 
-    @NonNull
-    @Column(unique=true)
+    @Column(nullable = false, unique = true, length = 45)
     private String email;
 
-    @NonNull
+    @Column(nullable = false, length = 64)
     private String password;
+
+    @Column(length = 20)
+    private String firstName;
+
+    @Column(nullable = false, length = 20)
+    private String lastName;
 
     @OneToMany(mappedBy = "user")
     private List<ProjectAssignment> projectAssigments;
@@ -41,4 +46,9 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     private List<File> files;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Project> ownedProjects;
+
+    private Boolean isSuperUser = false;
 }

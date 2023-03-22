@@ -39,4 +39,8 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<Release> releases;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    User owner;
+
 }
