@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -17,4 +19,26 @@ public class User {
 
     @NonNull
     private String username;
+
+    @NonNull
+    @Column(unique=true)
+    private String email;
+
+    @NonNull
+    private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<ProjectAssignment> projectAssigments;
+
+    @OneToMany(mappedBy = "assignee")
+    private List<Task> assignedTasks;
+
+    @OneToMany(mappedBy = "reporter")
+    private List<Task> reportedTasks;
+
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "author")
+    private List<File> files;
 }
