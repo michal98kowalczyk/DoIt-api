@@ -21,7 +21,7 @@ public class ProjectAssignment {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private String role;
+    private String position;
     private String accessLevel;
 
 }
