@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "comments")
 @Data
@@ -25,5 +27,16 @@ public class Comment {
     @JoinColumn(name = "task_id")
     private Task task;
 
+    @OneToOne
+    @JoinColumn(name = "parent_id")
+    Comment parent;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Transient
+    private String errorMessage;
 }
