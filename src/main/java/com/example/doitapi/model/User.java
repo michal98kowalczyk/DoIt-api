@@ -38,32 +38,34 @@ public class User implements UserDetails{
     @Column(nullable = false, length = 20)
     private String lastName;
 
-    @OneToMany(mappedBy = "user")
-    private List<ProjectAssignment> projectAssigments;
+//    @OneToMany(mappedBy = "user")
+//    @OneToMany
+//    private List<ProjectAssignment> projectAssigments;
 
-    @OneToMany(mappedBy = "assignee")
-    private List<Task> assignedTasks;
+//    @OneToMany(mappedBy = "assignee")
+//    private List<Task> assignedTasks;
+//
+//    @OneToMany(mappedBy = "reporter")
+//    private List<Task> reportedTasks;
+//
+//    @OneToMany(mappedBy = "author")
+//    private List<Comment> comments;
+//
+//    @OneToMany(mappedBy = "author")
+//    private List<File> files;
 
-    @OneToMany(mappedBy = "reporter")
-    private List<Task> reportedTasks;
-
-    @OneToMany(mappedBy = "author")
-    private List<Comment> comments;
-
-    @OneToMany(mappedBy = "author")
-    private List<File> files;
-
-    @OneToMany(mappedBy = "owner")
-    @JsonManagedReference
-    private List<Project> ownedProjects;
+//    @OneToMany(mappedBy = "owner")
+//    @JsonManagedReference
+//    private List<Project> ownedProjects;
 
     private Boolean isSuperUser = false;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
-    private List<Token> tokens;
+//    zakomentowane ze wzgledu na problemy z petla
+//    @OneToMany(mappedBy = "user")
+//    private List<Token> tokens;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;

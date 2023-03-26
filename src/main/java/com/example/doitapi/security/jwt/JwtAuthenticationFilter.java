@@ -58,6 +58,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+        System.out.println("#1 MK before do filter");
+        System.out.println("#1 MK before do filter request "+request.toString());
+        System.out.println("#1 MK before do filter request "+response.toString());
+        System.out.println("#1 MK before do filter 2");
         filterChain.doFilter(request, response);
     }
 }

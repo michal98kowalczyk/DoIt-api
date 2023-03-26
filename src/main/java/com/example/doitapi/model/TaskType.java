@@ -23,10 +23,11 @@ public class TaskType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "availableTaskTypes")
-    private List<Project> projects;
+//    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "availableTaskTypes")
+//    private List<Project> projects;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

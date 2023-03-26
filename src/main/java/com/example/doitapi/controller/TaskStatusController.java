@@ -18,7 +18,7 @@ public class TaskStatusController {
 
     private final TaskStatusService taskStatusService;
 
-    @GetMapping("taskstatus")
+    @GetMapping("/taskstatus")
     public ResponseEntity<ArrayList<TaskStatus>> getAllTaskStatuses() {
         final ArrayList<TaskStatus> taskStatuses = taskStatusService.getAllTaskStatues();
         return ResponseEntity.ok(taskStatuses);
