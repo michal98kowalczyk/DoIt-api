@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "files")
 @Data
@@ -27,4 +29,10 @@ public class File {
     private byte[] content;
 
     private String type;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Transient
+    private String errorMessage;
 }

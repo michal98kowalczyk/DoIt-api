@@ -1,9 +1,11 @@
 package com.example.doitapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,7 +23,7 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<ProjectAssignment> projectAssignmentList;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "project_task_types",
             joinColumns = @JoinColumn(name = "task_type_id"),
@@ -41,6 +43,15 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
+    @JsonBackReference
     User owner;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Transient
+    private String errorMessage;
 }

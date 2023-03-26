@@ -9,6 +9,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -20,6 +26,9 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         System.out.println("#1 MK Request: " + request);
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("Timestamp.valueOf(now) "+Timestamp.valueOf(now));
+
         var user = User.builder()
                 .username(request.getUsername())
                 .firstName(request.getFirstName())
@@ -27,6 +36,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
+                .createdDate(Timestamp.valueOf(now))
                 .build();
         var savedUser = repository.save(user);
         var jwtToken = jwtService.generateToken(user);

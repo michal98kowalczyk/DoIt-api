@@ -53,4 +53,13 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "release_id")
     private Release release;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Transient
+    private String errorMessage;
 }

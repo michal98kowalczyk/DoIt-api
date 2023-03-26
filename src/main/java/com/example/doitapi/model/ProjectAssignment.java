@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "project_assignments")
 @Data
@@ -22,6 +24,17 @@ public class ProjectAssignment {
     @JoinColumn(name = "user_id")
     private User user;
     private String position;
-    private String accessLevel;
+
+    @Enumerated(EnumType.STRING)
+    private AccessLevel accessLevel;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Transient
+    private String errorMessage;
 
 }

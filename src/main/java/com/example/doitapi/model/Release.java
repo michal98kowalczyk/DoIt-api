@@ -29,4 +29,13 @@ public class Release {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Transient
+    private String errorMessage;
 }
