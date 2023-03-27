@@ -89,4 +89,12 @@ public class AuthenticationService {
         });
         tokenRepository.saveAll(validUserTokens);
     }
+
+    public User getUser(Long id) {
+        return  repository.findById(id).get();
+    }
+
+    public AuthenticationResponse getAuthenticationResponse(User user) {
+        return AuthenticationResponse.builder().userId(user.getId()).userEmail(user.getEmail()).build();
+    }
 }

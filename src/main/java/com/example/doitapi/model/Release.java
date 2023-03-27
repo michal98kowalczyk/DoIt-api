@@ -17,11 +17,11 @@ public class Release {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "release")
-    private List<Sprint> sprints;
-
-    @OneToMany(mappedBy = "release")
-    private List<Task> tasks;
+//    @OneToMany(mappedBy = "release")
+//    private List<Sprint> sprints;
+//
+//    @OneToMany(mappedBy = "release")
+//    private List<Task> tasks;
 
     @Temporal(TemporalType.DATE)
     private Date fixVersion;

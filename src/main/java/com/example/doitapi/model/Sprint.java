@@ -26,8 +26,8 @@ public class Sprint {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToOne(mappedBy = "sprint")
-    private Task task;
+//    @OneToOne(mappedBy = "sprint")
+//    private Task task;
 
     @ManyToOne
     @JoinColumn(name = "release_id")

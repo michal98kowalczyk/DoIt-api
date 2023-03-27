@@ -1,6 +1,8 @@
 package com.example.doitapi.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,8 @@ import java.util.Date;
 @Table(name = "project_assignments")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ProjectAssignment {
 
     @Id
@@ -20,9 +24,9 @@ public class ProjectAssignment {
     @JoinColumn(name = "project_id")
     private Project project;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     private String position;
 
     @Enumerated(EnumType.STRING)

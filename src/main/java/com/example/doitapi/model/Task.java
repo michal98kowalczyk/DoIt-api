@@ -46,7 +46,7 @@ public class Task {
     @Temporal(TemporalType.DATE)
     private Date fixVersion;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "sprint_id", referencedColumnName = "id")
     private Sprint sprint;
 
