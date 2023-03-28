@@ -8,6 +8,7 @@ import com.example.doitapi.repository.TaskStatusRepository;
 import com.example.doitapi.repository.TaskTypeRepository;
 import com.example.doitapi.repository.UserRepository;
 import com.example.doitapi.service.TaskStatusService;
+import com.example.doitapi.service.TaskTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -38,7 +39,7 @@ public class InitialData {
 
     private final UserRepository userRepository;
 
-    private final TaskTypeRepository taskTypeRepository;
+    private final TaskTypeService taskTypeService;
     private final TaskStatusRepository taskStatusRepository;
     private final TaskStatusService taskStatusService;
 
@@ -65,34 +66,31 @@ public class InitialData {
             taskStatusArrayList.add(ts);
         }
         final ArrayList<TaskStatus> saved = taskStatusService.addStatus(taskStatusArrayList);
-//        System.out.println("saved1  "+saved);
-//        System.out.println("saved2  "+taskStatusRepository.findByName("New"));
-
 
 
     }
 
     private void createInitialTaskTypes() {
-        ArrayList<TaskType> taskStatusArrayList = new ArrayList<>();
+        ArrayList<TaskType> taskTypeArrayList = new ArrayList<>();
 
-        System.out.println("task "+task);
         final String[] taskTypes = task.split(";");
         for (String taskType: taskTypes) {
             final String[] taskNameAndStatuses = taskType.split(":");
             String taskName = taskNameAndStatuses[0];
-            String[] taskStatuses = taskNameAndStatuses[1].split(",");
-            ArrayList<String> arl = new ArrayList<>();
-            arl.addAll(List.of(taskStatuses));
-            final ArrayList<TaskStatus> allByNameIn = taskStatusRepository.findAllByNameIn(arl);
-            System.out.println("allByNameIn "+allByNameIn.toString());
-
-            TaskType tt = TaskType.builder()
-                    .name(taskName)
-                    .availableTaskStatuses(allByNameIn)
-                    .build();
-            taskTypeRepository.save(tt);
-            System.out.println("saved tt "+tt.toString());
+            final TaskType byName = taskTypeService.findByName(taskName);
+            if (byName == null) {
+                String[] taskStatuses = taskNameAndStatuses[1].split(",");
+                ArrayList<String> arl = new ArrayList<>();
+                arl.addAll(List.of(taskStatuses));
+                final ArrayList<TaskStatus> allByNameIn = taskStatusRepository.findAllByNameIn(arl);
+                TaskType tt = TaskType.builder()
+                        .name(taskName)
+                        .availableTaskStatuses(allByNameIn)
+                        .build();
+                taskTypeArrayList.add(tt);
+            }
         }
+        taskTypeService.addTaskType(taskTypeArrayList);
     }
     private void createAdminUser() {
         LocalDateTime now = LocalDateTime.now();

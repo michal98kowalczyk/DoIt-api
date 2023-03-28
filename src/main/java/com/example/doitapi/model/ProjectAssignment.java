@@ -20,9 +20,9 @@ public class ProjectAssignment {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
     private String position;
 
     @Enumerated(EnumType.STRING)

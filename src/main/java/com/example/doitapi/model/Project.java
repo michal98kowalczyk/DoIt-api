@@ -2,8 +2,7 @@ package com.example.doitapi.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +11,8 @@ import java.util.List;
 @Table(name = "projects")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Project {
 
     @Id
@@ -20,8 +21,8 @@ public class Project {
 
     private String name;
 
-    @OneToMany(mappedBy = "project")
-    private List<ProjectAssignment> projectAssignmentList;
+//    @OneToMany(mappedBy = "project")
+//    private List<ProjectAssignment> projectAssignmentList;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -30,20 +31,20 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<TaskType> availableTaskTypes;
 
-    @OneToMany(mappedBy = "project")
-    private List<Task> tasks;
-
-    @OneToMany(mappedBy = "project")
-    private List<Sprint> sprints;
+//    @OneToMany(mappedBy = "project")
+//    private List<Task> tasks;
+//
+//    @OneToMany(mappedBy = "project")
+//    private List<Sprint> sprints;
 
     private Boolean isSprintsApplicable;
 
-    @OneToMany(mappedBy = "project")
-    private List<Release> releases;
+//    @OneToMany(mappedBy = "project")
+//    private List<Release> releases;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    @JsonBackReference
+//    @JsonBackReference
     User owner;
 
     @Temporal(TemporalType.TIMESTAMP)
