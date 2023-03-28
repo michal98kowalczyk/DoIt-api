@@ -23,9 +23,9 @@ public class ProjectAssignmentController {
 
     private final ProjectAssignmentService projectAssignmentService;
 
-    @GetMapping("/assignment")
-    public ResponseEntity<ArrayList<ProjectAssignment>> getAllProjectAssignments(@RequestBody User user) {
-        final ArrayList<ProjectAssignment> allProjectAssignment = projectAssignmentService.getAllProjectAssignmentsByUser(user);
+    @GetMapping("/assignment/user/{id}")
+    public ResponseEntity<ArrayList<ProjectAssignment>> getAllProjectAssignments(@PathVariable Long id) {
+        final ArrayList<ProjectAssignment> allProjectAssignment = projectAssignmentService.getAllProjectAssignmentsByUser(id);
         return ResponseEntity.ok(allProjectAssignment);
     }
 

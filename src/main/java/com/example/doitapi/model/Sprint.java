@@ -1,6 +1,8 @@
 package com.example.doitapi.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,8 @@ import java.util.Date;
 @Table(name = "sprints")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Sprint {
 
     @Id

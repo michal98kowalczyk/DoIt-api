@@ -25,8 +25,8 @@ public class ProjectAssignmentService {
 
 
 
-    public ArrayList<ProjectAssignment> getAllProjectAssignmentsByUser(User user) {
-        return (ArrayList<ProjectAssignment>) projectAssignmentRepository.findAllByUser(user);
+    public ArrayList<ProjectAssignment> getAllProjectAssignmentsByUser(Long id) {
+        return (ArrayList<ProjectAssignment>) projectAssignmentRepository.findAllByUserId(id);
     }
 
     public ProjectAssignmentResponse addProjectAssignment(ProjectAssignment projectAssignment) {
