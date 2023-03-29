@@ -39,7 +39,7 @@ public class ReleaseService {
     public ReleaseResponse getReleaseResponse(Release release) {
         return ReleaseResponse.builder().id(release.getId())
                 .fixVersion(release.getFixVersion())
-                .projectId(release.getProject().getId())
+                .projectId(release.getProject()!=null ? release.getProject().getId() : null)
                 .createdDate(release.getCreatedDate())
                 .lastModifiedDate(release.getLastModifiedDate())
                 .errorMessage(release.getErrorMessage())

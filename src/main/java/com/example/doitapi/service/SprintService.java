@@ -41,8 +41,8 @@ public class SprintService {
 
     public SprintResponse getSprintResponse(Sprint sprint) {
         return SprintResponse.builder().id(sprint.getId())
-                .releaseId(sprint.getRelease().getId())
-                .projectId(sprint.getProject().getId())
+                .releaseId(sprint.getRelease() !=null ? sprint.getRelease().getId() : null)
+                .projectId(sprint.getProject() != null ? sprint.getProject().getId() : null)
                 .startDate(sprint.getStartDate())
                 .endDate(sprint.getEndDate())
                 .createdDate(sprint.getCreatedDate())
