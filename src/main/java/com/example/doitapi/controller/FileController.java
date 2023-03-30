@@ -5,6 +5,7 @@ import com.example.doitapi.model.File;
 import com.example.doitapi.payload.response.FileResponse;
 import com.example.doitapi.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,17 @@ public class FileController {
     public ResponseEntity<ArrayList<FileResponse>> getAllFiles() {
         final ArrayList<FileResponse> files = fileService.getAllFiles();
         return ResponseEntity.ok(files);
+    }
+
+    @GetMapping("/file/{id}")
+    public ResponseEntity<byte[]> getFile(@PathVariable Long id) {
+        System.out.println("id "+id);
+
+        File file = fileService.getFile(id);
+        System.out.println("file "+file.getName());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                .body(file.getContent());
     }
 
     @PostMapping("/file")

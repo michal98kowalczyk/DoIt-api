@@ -6,7 +6,9 @@ import com.example.doitapi.payload.response.FileResponse;
 import com.example.doitapi.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,9 +21,10 @@ public class FileService {
 
     private final FileRepository fileRepository;
 
+    @Transactional
     public FileResponse addFile(MultipartFile multipartFile) throws IOException {
         final Date currentDateTime = TimeService.getCurrentDateTime();
-        System.out.println("fiel time "+currentDateTime);
+        System.out.println("fiel time " + currentDateTime);
         File file = File.builder()
                 .content(multipartFile.getBytes())
                 .type(multipartFile.getContentType())
@@ -34,7 +37,7 @@ public class FileService {
         } catch (Exception e) {
             DoitApiApplication.logger.info(e.getMessage());
         }
-        System.out.println("fiel saved "+saved.getId());
+        System.out.println("fiel saved " + saved.getId());
 
         return getFileResponse(file);
     }
@@ -48,22 +51,38 @@ public class FileService {
     }
 
     public FileResponse getFileResponse(File file) {
+
+        String fileDownloadUri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/api/v1/file/")
+                .path(String.valueOf(file.getId()))
+                .toUriString();
+
         return FileResponse.builder().id(file.getId())
                 .name(file.getName())
-                .taskId(file.getTask()!=null ? file.getTask().getId() : null)
-                .authorId(file.getAuthor()!=null ? file.getAuthor().getId() : null)
+                .taskId(file.getTask() != null ? file.getTask().getId() : null)
+                .authorId(file.getAuthor() != null ? file.getAuthor().getId() : null)
+                .url(fileDownloadUri)
                 .type(file.getType())
                 .createdDate(file.getCreatedDate())
                 .errorMessage(file.getErrorMessage())
                 .build();
     }
 
+    @Transactional
+    public File getFile(Long id) {
+        return fileRepository.findById(id).get();
+    }
 
-    public ArrayList<FileResponse> getFileResponse(ArrayList<File>  files) {
+
+    public ArrayList<FileResponse> getFileResponse(ArrayList<File> files) {
         ArrayList<FileResponse> fileResponses = new ArrayList<>();
-        for (File t: files) {
+        for (File t : files) {
             fileResponses.add(getFileResponse(t));
         }
         return fileResponses;
     }
+
 }
+
+
