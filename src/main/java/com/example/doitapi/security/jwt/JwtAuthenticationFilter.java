@@ -8,7 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Security;
+import java.util.Arrays;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +19,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
@@ -33,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
+        System.out.println("authHeader "+authHeader);
         final String jwt;
         final String userEmail;
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
@@ -58,10 +65,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-        System.out.println("#1 MK before do filter");
-        System.out.println("#1 MK before do filter request "+request.toString());
-        System.out.println("#1 MK before do filter request "+response.toString());
-        System.out.println("#1 MK before do filter 2");
+        System.out.println("#1filter");
+
+
         filterChain.doFilter(request, response);
     }
+
 }
