@@ -37,14 +37,12 @@ public class Task {
 
     private String status;
 
-    @OneToMany(mappedBy = "task")
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "task")
+//    private List<Comment> comments;
+//
+//    @OneToMany(mappedBy = "task")
+//    private List<File> files;
 
-    @OneToMany(mappedBy = "task")
-    private List<File> files;
-
-    @Temporal(TemporalType.DATE)
-    private Date fixVersion;
 
     @ManyToOne
     @JoinColumn(name = "sprint_id", referencedColumnName = "id")
@@ -53,6 +51,13 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "release_id")
     private Release release;
+
+    @OneToOne
+    @JoinColumn(name = "clonedFrom_id", referencedColumnName = "id")
+    private Task clonedFrom;
+
+    @OneToMany
+    private List<Task> blockedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
