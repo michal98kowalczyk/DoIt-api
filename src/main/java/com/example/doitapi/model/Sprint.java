@@ -1,6 +1,8 @@
 package com.example.doitapi.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,8 @@ import java.util.Date;
 @Table(name = "sprints")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Sprint {
 
     @Id
@@ -26,8 +30,8 @@ public class Sprint {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToOne(mappedBy = "sprint")
-    private Task task;
+//    @OneToOne(mappedBy = "sprint")
+//    private Task task;
 
     @ManyToOne
     @JoinColumn(name = "release_id")
