@@ -25,6 +25,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+
         System.out.println("#1 MK Request: " + request);
         LocalDateTime now = LocalDateTime.now();
         System.out.println("Timestamp.valueOf(now) "+Timestamp.valueOf(now));
@@ -38,13 +39,28 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .createdDate(Timestamp.valueOf(now))
                 .build();
-        var savedUser = repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        saveUserToken(savedUser, jwtToken);
+
+        User savedUser = null;
+        var jwtToken = "";
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            savedUser = repository.save(user);
+            jwtToken = jwtService.generateToken(user);
+            saveUserToken(savedUser, jwtToken);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
-                .userId(savedUser.getId())
-                .userEmail(savedUser.getEmail())
+                .userId(savedUser !=null ? savedUser.getId() : null)
+                .userEmail(savedUser !=null ? savedUser.getEmail() : null)
+                .success(isSuccess)
+                .errorMessage(errorMessage)
                 .build();
     }
 
