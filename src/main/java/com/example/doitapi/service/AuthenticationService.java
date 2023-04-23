@@ -27,9 +27,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
 
-        System.out.println("#1 MK Request: " + request);
         LocalDateTime now = LocalDateTime.now();
-        System.out.println("Timestamp.valueOf(now) "+Timestamp.valueOf(now));
 
         Optional<User> fromDb = repository.findByEmail(request.getEmail());
         if (fromDb.isPresent()){
@@ -73,13 +71,7 @@ public class AuthenticationService {
         }
 
 
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .userId(savedUser !=null ? savedUser.getId() : null)
-                .userEmail(savedUser !=null ? savedUser.getEmail() : null)
-                .success(isSuccess)
-                .errorMessage(errorMessage)
-                .build();
+        return getAuthenticationResponse(savedUser,jwtToken,errorMessage,isSuccess);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -105,14 +97,7 @@ public class AuthenticationService {
             isSuccess = false;
             System.out.println(errorMessage);
         }
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .userId(user !=null ? user.getId() : null)
-                .userEmail(user !=null ? user.getEmail() : null)
-                .success(isSuccess)
-                .errorMessage(errorMessage)
-                .role(user !=null ? String.valueOf(user.getRole()) : null)
-                .build();
+        return getAuthenticationResponse(user,jwtToken,errorMessage,isSuccess);
     }
 
     private void saveUserToken(User user, String jwtToken) {
@@ -137,11 +122,147 @@ public class AuthenticationService {
         tokenRepository.saveAll(validUserTokens);
     }
 
+    private void deleteAllUserTokens(User user) {
+        var validUserTokens = tokenRepository.findAllByUser(user);
+        if (validUserTokens.isEmpty())
+            return;
+        tokenRepository.deleteAll(validUserTokens);
+    }
+
     public User getUser(Long id) {
         return  repository.findById(id).get();
     }
 
     public AuthenticationResponse getAuthenticationResponse(User user) {
         return AuthenticationResponse.builder().userId(user.getId()).userEmail(user.getEmail()).build();
+    }
+
+    public AuthenticationResponse getAuthenticationResponse(User user,String jwtToken, String errorMessage, Boolean isSuccess ) {
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .userId(user !=null ? user.getId() : null)
+                .userEmail(user !=null ? user.getEmail() : null)
+                .username(user !=null ? user.getRealUsername() : null)
+                .firstName(user !=null ? user.getFirstName() : null)
+                .lastName(user !=null ? user.getLastName() : null)
+                .info(user !=null ? user.getInfo() : null)
+                .success(isSuccess)
+                .errorMessage(errorMessage)
+                .role(user !=null ? String.valueOf(user.getRole()) : null)
+                .build();
+    }
+
+    public AuthenticationResponse updateUser(RegisterRequest request, String id) {
+        LocalDateTime now = LocalDateTime.now();
+        User userFromDB =  getUser(Long.valueOf(id));
+
+        if(!userFromDB.getEmail().equals(request.getEmail())){
+            return getAuthenticationResponse(null,null,"Wrong user!",false);
+        }
+
+        userFromDB.setFirstName(request.getFirstName());
+        userFromDB.setLastName(request.getLastName());
+        userFromDB.setInfo(request.getUserInfo());
+        userFromDB.setLastModifiedDate(Timestamp.valueOf(now));
+
+
+        User savedUser = null;
+        var jwtToken = "";
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            savedUser = repository.save(userFromDB);
+            jwtToken = jwtService.generateToken(savedUser);
+            saveUserToken(savedUser, jwtToken);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+
+        return getAuthenticationResponse(savedUser,jwtToken,errorMessage,isSuccess);
+    }
+
+    public AuthenticationResponse changeEmail(RegisterRequest request, String id) {
+        LocalDateTime now = LocalDateTime.now();
+        User userFromDB =  getUser(Long.valueOf(id));
+
+        if(!userFromDB.getRealUsername().equals(request.getUsername())){
+            return getAuthenticationResponse(null,null,"Wrong user!",false);
+        }
+        userFromDB.setEmail(request.getEmail());
+        userFromDB.setLastModifiedDate(Timestamp.valueOf(now));
+
+        User savedUser = null;
+        var jwtToken = "";
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            savedUser = repository.save(userFromDB);
+            jwtToken = jwtService.generateToken(savedUser);
+            saveUserToken(savedUser, jwtToken);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+
+        return getAuthenticationResponse(savedUser,jwtToken,errorMessage,isSuccess);
+    }
+
+    public AuthenticationResponse changePassword(RegisterRequest request, String id) {
+        LocalDateTime now = LocalDateTime.now();
+        User userFromDB =  getUser(Long.valueOf(id));
+
+        if(!userFromDB.getRealUsername().equals(request.getUsername())){
+            return getAuthenticationResponse(null,null,"Wrong user!",false);
+        }
+        if (!passwordEncoder.matches(request.getOldPassword(),userFromDB.getPassword())){
+            return getAuthenticationResponse(null,null,"Incorrect password!",false);
+        }
+        if(passwordEncoder.matches(request.getPassword(),userFromDB.getPassword())){
+            return getAuthenticationResponse(null,null,"You cannot use previous password!",false);
+        }
+
+        userFromDB.setPassword((passwordEncoder.encode(request.getPassword())));
+        userFromDB.setLastModifiedDate(Timestamp.valueOf(now));
+
+
+        User savedUser = null;
+        var jwtToken = "";
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            savedUser = repository.save(userFromDB);
+            jwtToken = jwtService.generateToken(savedUser);
+            saveUserToken(savedUser, jwtToken);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+
+        return getAuthenticationResponse(savedUser,jwtToken,errorMessage,isSuccess);
+    }
+
+    public AuthenticationResponse deleteUser(RegisterRequest request, String id) {
+        User userFromDB =  getUser(Long.valueOf(id));
+
+        if(!userFromDB.getRealUsername().equals(request.getUsername())){
+            return getAuthenticationResponse(null,null,"Operation not allowed!",false);
+        }
+        deleteAllUserTokens(userFromDB);
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            repository.delete(userFromDB);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+
+        return getAuthenticationResponse(null,null,errorMessage,isSuccess);
+
     }
 }

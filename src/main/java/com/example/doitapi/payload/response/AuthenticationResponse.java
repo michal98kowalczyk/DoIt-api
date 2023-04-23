@@ -15,6 +15,13 @@ public class AuthenticationResponse {
     private Long userId;
     private String userEmail;
     private String role;
+
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String info;
+
+    private String photoUrl;
     private Boolean success = false;
 
     private String errorMessage;

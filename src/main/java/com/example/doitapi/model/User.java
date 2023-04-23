@@ -38,6 +38,8 @@ public class User implements UserDetails{
     @Column(nullable = false, length = 20)
     private String lastName;
 
+    private String info;
+
 //    @OneToMany(mappedBy = "user")
 //    @OneToMany
 //    private List<ProjectAssignment> projectAssigments;
@@ -84,6 +86,10 @@ public class User implements UserDetails{
     @Override
     public String getUsername() {
         return email; //to provide security this method needs to be overrided to compare email with email
+    }
+
+    public String getRealUsername() {
+        return username;
     }
     @Override
     public boolean isAccountNonExpired() {
