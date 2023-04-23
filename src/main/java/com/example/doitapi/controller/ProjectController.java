@@ -20,6 +20,8 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
+//    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "*", exposedHeaders = "Authorization", allowCredentials = "true")
+
     @GetMapping("/project")
     public ResponseEntity<ArrayList<Project>> getAllProjects() {
         final ArrayList<Project> allProjects = projectService.getAllProjects();

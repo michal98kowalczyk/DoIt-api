@@ -15,8 +15,11 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
 
+//    @CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "*", exposedHeaders = "Authorization", allowCredentials = "true")
+
     @GetMapping("/hello")
     public ResponseEntity<String> sayHello2() {
+        System.out.println("send response from non - secured endpoint");
         return ResponseEntity.ok("Hello from non - secured endpoint");
     }
 
@@ -30,6 +33,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
     ) {
+        System.out.println("request" +request);
         return ResponseEntity.ok(service.authenticate(request));
     }
 
