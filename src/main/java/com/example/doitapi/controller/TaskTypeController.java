@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1/")
 @RequiredArgsConstructor
 public class TaskTypeController {
 
     private final TaskTypeService taskTypeService;
 
-    @GetMapping("/tasktype")
+    @GetMapping("tasktype")
     public ResponseEntity<ArrayList<TaskType>> getAllTaskTypes() {
         final ArrayList<TaskType> taskStatuses = taskTypeService.getAllTaskTypes();
         return ResponseEntity.ok(taskStatuses);
     }
 
-    @PostMapping("/tasktype")
+    @PostMapping("admin/tasktype")
     public ResponseEntity<TaskType> addTaskType(@RequestBody TaskType type) {
         ArrayList<TaskType> typeResult = new ArrayList<>();
         try {

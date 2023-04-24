@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -264,5 +266,12 @@ public class AuthenticationService {
 
         return getAuthenticationResponse(null,null,errorMessage,isSuccess);
 
+    }
+
+    public ArrayList<AuthenticationResponse> getAllUsersWithUserRole() {
+        final ArrayList<User> all = (ArrayList<User>) repository.findAllByRole(Role.USER);
+        ArrayList<AuthenticationResponse> results = new ArrayList<>();
+        all.forEach(user -> results.add(getAuthenticationResponse(user,null,null,true)));
+        return  results;
     }
 }
