@@ -62,6 +62,8 @@ public class User implements UserDetails{
 
     private Boolean isSuperUser = false;
 
+    private Boolean isLocked = false;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

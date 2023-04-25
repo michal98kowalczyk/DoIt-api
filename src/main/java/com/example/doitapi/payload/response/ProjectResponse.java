@@ -19,4 +19,6 @@ public class ProjectResponse {
     private Long id;
     private String name;
     private String errorMessage;
+
+    private Boolean isSuccess;
 }

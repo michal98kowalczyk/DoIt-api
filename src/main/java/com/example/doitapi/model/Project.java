@@ -37,7 +37,9 @@ public class Project {
 //    @OneToMany(mappedBy = "project")
 //    private List<Sprint> sprints;
 
-    private Boolean isSprintsApplicable;
+
+    @Enumerated(EnumType.STRING)
+    private ProjectType projectType;
 
 //    @OneToMany(mappedBy = "project")
 //    private List<Release> releases;

@@ -32,14 +32,21 @@ public class ProjectService {
         project.setCreatedDate(currentDateTime);
         project.setLastModifiedDate(currentDateTime);
         Project saved = null;
+
+        Boolean isSuccess = true;
+        String errorMsg="";
         try {
             saved = projectRepository.save(project);
         } catch (Exception e) {
+            isSuccess = false;
+            errorMsg = e.getMessage();
             DoitApiApplication.logger.info(e.getMessage());
         }
         return ProjectResponse.builder()
                 .id(saved.getId())
                 .name(saved.getName())
+                .isSuccess(isSuccess)
+                .errorMessage(errorMsg)
                 .build();
     }
 

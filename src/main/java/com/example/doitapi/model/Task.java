@@ -37,6 +37,11 @@ public class Task {
 
     private String status;
 
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
+    Integer storyPoints;
+
 //    @OneToMany(mappedBy = "task")
 //    private List<Comment> comments;
 //
@@ -58,6 +63,9 @@ public class Task {
 
     @OneToMany
     private List<Task> blockedBy;
+
+    @Temporal(TemporalType.DATE)
+    private Date dueDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
