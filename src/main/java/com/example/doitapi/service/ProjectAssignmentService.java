@@ -45,4 +45,22 @@ public class ProjectAssignmentService {
 
         return ProjectAssignmentResponse.builder().id(saved.getId()).project(projectResponse).user(authenticationResponse).accessLevel(saved.getAccessLevel()).position(saved.getPosition()).build();
     }
+
+    public String addProjectAssignments(ArrayList<ProjectAssignment> projectAssignments) {
+        final Date currentDateTime = TimeService.getCurrentDateTime();
+        projectAssignments.forEach(pa -> {
+            pa.setCreatedDate(currentDateTime);
+            pa.setLastModifiedDate(currentDateTime);
+        });
+        ArrayList<ProjectAssignment> saved = null;
+        try {
+            saved = (ArrayList<ProjectAssignment>) projectAssignmentRepository.saveAll(projectAssignments);
+        } catch (RuntimeException e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        if(saved==null || saved.isEmpty()) {
+            return null;
+        }
+        return "SUCCESS";
+    }
 }

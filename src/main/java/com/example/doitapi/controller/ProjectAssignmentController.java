@@ -44,4 +44,19 @@ public class ProjectAssignmentController {
         System.out.println("project assig saved "+saved.toString());
         return ResponseEntity.ok(saved);
     }
+
+    @PostMapping("/assignments")
+    public ResponseEntity<String> addProjectAssignments(@RequestBody ArrayList<ProjectAssignment> projectAssignments) {
+        System.out.println(" projectAssignments "+projectAssignments);
+        String saved = null;
+        try {
+            saved = projectAssignmentService.addProjectAssignments(projectAssignments);
+        } catch (Exception e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        if (saved == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("FAILURE");
+        }
+        return ResponseEntity.ok(saved);
+    }
 }
