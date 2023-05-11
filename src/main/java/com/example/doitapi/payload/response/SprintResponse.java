@@ -22,5 +22,7 @@ public class SprintResponse {
     private Long releaseId;
     private Date createdDate;
     private Date lastModifiedDate;
+
+    private Integer sprintNumber;
     private String errorMessage;
 }

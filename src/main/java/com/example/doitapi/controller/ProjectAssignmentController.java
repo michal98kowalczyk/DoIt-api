@@ -29,6 +29,12 @@ public class ProjectAssignmentController {
         return ResponseEntity.ok(allProjectAssignment);
     }
 
+    @GetMapping("/assignment/project/{id}")
+    public ResponseEntity<ArrayList<ProjectAssignment>> getAllProjectAssignmentsByProject(@PathVariable Long id) {
+        final ArrayList<ProjectAssignment> allProjectAssignment = projectAssignmentService.getAllProjectAssignmentsByProject(id);
+        return ResponseEntity.ok(allProjectAssignment);
+    }
+
 
     @PostMapping("/assignment")
     public ResponseEntity<ProjectAssignmentResponse> addProjectAssignment(@RequestBody ProjectAssignment projectAssignment) {

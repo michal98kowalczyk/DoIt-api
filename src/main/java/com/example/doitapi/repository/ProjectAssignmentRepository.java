@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ProjectAssignmentRepository extends JpaRepository<ProjectAssignment, Integer> {
     List<ProjectAssignment> findAllByUserId(Long id);
+    List<ProjectAssignment> findAllByProjectId(Long id);
 }

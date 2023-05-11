@@ -20,6 +20,7 @@ public class Sprint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    Integer sprintNumber;
     @Temporal(TemporalType.DATE)
     private Date startDate;
 
