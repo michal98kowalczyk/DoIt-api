@@ -45,6 +45,7 @@ public class SprintService {
                 .projectId(sprint.getProject() != null ? sprint.getProject().getId() : null)
                 .startDate(sprint.getStartDate())
                 .endDate(sprint.getEndDate())
+                .sprintNumber(sprint.getSprintNumber())
                 .createdDate(sprint.getCreatedDate())
                 .lastModifiedDate(sprint.getLastModifiedDate())
                 .errorMessage(sprint.getErrorMessage())

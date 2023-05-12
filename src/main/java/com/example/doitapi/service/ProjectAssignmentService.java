@@ -29,6 +29,11 @@ public class ProjectAssignmentService {
         return (ArrayList<ProjectAssignment>) projectAssignmentRepository.findAllByUserId(id);
     }
 
+    public ArrayList<ProjectAssignment> getAllProjectAssignmentsByProject(Long id) {
+        return (ArrayList<ProjectAssignment>) projectAssignmentRepository.findAllByProjectId(id);
+
+    }
+
     public ProjectAssignmentResponse addProjectAssignment(ProjectAssignment projectAssignment) {
         final Date currentDateTime = TimeService.getCurrentDateTime();
         projectAssignment.setCreatedDate(currentDateTime);
@@ -63,4 +68,6 @@ public class ProjectAssignmentService {
         }
         return "SUCCESS";
     }
+
+
 }

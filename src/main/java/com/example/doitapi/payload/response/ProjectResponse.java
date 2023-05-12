@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectResponse {
+public class  ProjectResponse {
     private Long id;
     private String name;
     private String errorMessage;
