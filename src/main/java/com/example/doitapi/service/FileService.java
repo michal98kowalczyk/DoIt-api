@@ -2,8 +2,12 @@ package com.example.doitapi.service;
 
 import com.example.doitapi.DoitApiApplication;
 import com.example.doitapi.model.File;
+import com.example.doitapi.model.Task;
+import com.example.doitapi.model.User;
 import com.example.doitapi.payload.response.FileResponse;
 import com.example.doitapi.repository.FileRepository;
+import com.example.doitapi.repository.TaskRepository;
+import com.example.doitapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,21 +18,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class FileService {
 
+    private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
     private final FileRepository fileRepository;
 
     @Transactional
-    public FileResponse addFile(MultipartFile multipartFile) throws IOException {
+    public FileResponse addFile(MultipartFile multipartFile, Long userId, Long taskId) throws IOException {
         final Date currentDateTime = TimeService.getCurrentDateTime();
+        User u = userRepository.findById(userId).get();
+        Task t = taskRepository.findById(taskId).get();
+
         System.out.println("fiel time " + currentDateTime);
         File file = File.builder()
                 .content(multipartFile.getBytes())
                 .type(multipartFile.getContentType())
-                .name(multipartFile.getName())
+                .name(multipartFile.getOriginalFilename())
+                .author(u)
+                .task(t)
+                .createdDate(currentDateTime)
                 .build();
 
         File saved = null;
@@ -83,6 +96,17 @@ public class FileService {
         return fileResponses;
     }
 
+    public ArrayList<FileResponse> addFiles(ArrayList<MultipartFile> files, Long userId, Long taskId) {
+        ArrayList<FileResponse> responses = new ArrayList<>();
+        files.forEach(f-> {
+            try {
+                responses.add(addFile(f,userId,taskId));
+            } catch (IOException e) {
+                DoitApiApplication.logger.info(e.getMessage());
+            }
+        });
+        return responses;
+    }
 }
 
 

@@ -33,7 +33,7 @@ public class TaskController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<TaskResponse> addSprint(@RequestBody Task task) {
+    public ResponseEntity<TaskResponse> addTask(@RequestBody Task task) {
         TaskResponse saved = null;
         try {
             saved = taskService.addTask(task);
