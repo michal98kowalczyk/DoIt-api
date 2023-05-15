@@ -18,6 +18,8 @@ public class ReleaseResponse {
     private Long id;
     private Date fixVersion;
     private Long projectId;
+
+    private Boolean isReleased;
     private Date createdDate;
     private Date lastModifiedDate;
     private String errorMessage;

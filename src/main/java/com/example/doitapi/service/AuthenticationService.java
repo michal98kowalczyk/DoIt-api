@@ -136,7 +136,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse getAuthenticationResponse(User user) {
-        return AuthenticationResponse.builder().userId(user.getId()).userEmail(user.getEmail()).build();
+        return AuthenticationResponse.builder().userId(user.getId()).userEmail(user.getEmail()).lastName(user.getLastName()).firstName(user.getFirstName()).build();
     }
 
     public AuthenticationResponse getAuthenticationResponse(User user,String jwtToken, String errorMessage, Boolean isSuccess ) {
