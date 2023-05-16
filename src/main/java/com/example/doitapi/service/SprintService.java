@@ -49,11 +49,13 @@ public class SprintService {
 
     public SprintResponse getSprintResponse(Sprint sprint) {
         return SprintResponse.builder().id(sprint.getId())
-                .releaseId(sprint.getRelease() !=null ? sprint.getRelease().getId() : null)
-                .projectId(sprint.getProject() != null ? sprint.getProject().getId() : null)
+                .release(sprint.getRelease() !=null ? sprint.getRelease() : null)
+                .project(sprint.getProject() != null ? sprint.getProject() : null)
                 .startDate(sprint.getStartDate())
                 .endDate(sprint.getEndDate())
                 .sprintNumber(sprint.getSprintNumber())
+                .isCompleted(sprint.getIsCompleted())
+                .isActive(sprint.getIsActive())
                 .createdDate(sprint.getCreatedDate())
                 .lastModifiedDate(sprint.getLastModifiedDate())
                 .errorMessage(sprint.getErrorMessage())
@@ -66,5 +68,67 @@ public class SprintService {
             sprintResponses.add(getSprintResponse(s));
         }
         return sprintResponses;
+    }
+
+    public Boolean deleteSprintFromProject(Long projectId) {
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            sprintRepository.deleteByProjectId(projectId);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+        return isSuccess;
+    }
+
+    public SprintResponse updateSprint(Sprint sprint) {
+        Sprint fromDb = sprintRepository.findById(sprint.getId());
+        final Date currentDateTime = TimeService.getCurrentDateTime();
+        fromDb.setLastModifiedDate(currentDateTime);
+        fromDb.setEndDate(sprint.getEndDate());
+        fromDb.setStartDate(sprint.getStartDate());
+        fromDb.setRelease(sprint.getRelease());
+        Sprint saved = null;
+        try {
+            saved = sprintRepository.save(fromDb);
+        } catch (Exception e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        return getSprintResponse(saved);
+    }
+
+    public Boolean startSprint(Long id) {
+        Sprint fromDb = sprintRepository.findById(id);
+        final Date currentDateTime = TimeService.getCurrentDateTime();
+        fromDb.setLastModifiedDate(currentDateTime);
+        fromDb.setIsActive(true);
+        Sprint saved = null;
+        Boolean isSuccess=true;
+        try {
+            saved = sprintRepository.save(fromDb);
+        } catch (Exception e) {
+            isSuccess=false;
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        return isSuccess;
+    }
+
+    public Boolean completeSprint(Long id) {
+        Sprint fromDb = sprintRepository.findById(id);
+        final Date currentDateTime = TimeService.getCurrentDateTime();
+        fromDb.setLastModifiedDate(currentDateTime);
+        fromDb.setIsCompleted(true);
+        fromDb.setIsActive(false);
+        Sprint saved = null;
+        Boolean isSuccess=true;
+        try {
+            saved = sprintRepository.save(fromDb);
+        } catch (Exception e) {
+            isSuccess=false;
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        return isSuccess;
     }
 }

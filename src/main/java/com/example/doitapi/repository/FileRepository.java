@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface FileRepository extends JpaRepository<File, Integer> {
     List<File> findAllByTaskId(Long id);
     Optional<File> findById(Long id);
+    void deleteAllByTaskIdIn(List<Long> ids);
 }

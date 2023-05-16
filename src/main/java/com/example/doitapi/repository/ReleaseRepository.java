@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ReleaseRepository extends JpaRepository<Release, Integer> {
     List<Release> findAllByProjectId(Long id);
+    void deleteByProjectId(Long projectId);
 }

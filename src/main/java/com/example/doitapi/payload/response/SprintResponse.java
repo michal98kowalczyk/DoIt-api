@@ -18,11 +18,15 @@ public class SprintResponse {
     private Long id;
     private Date startDate;
     private Date endDate;
-    private Long projectId;
-    private Long releaseId;
+    private Project project;
+    private Release release;
     private Date createdDate;
     private Date lastModifiedDate;
 
     private Integer sprintNumber;
+
+
+    private Boolean isCompleted;
+    private Boolean isActive;
     private String errorMessage;
 }
