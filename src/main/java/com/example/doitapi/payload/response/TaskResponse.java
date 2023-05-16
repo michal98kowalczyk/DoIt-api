@@ -25,8 +25,8 @@ public class TaskResponse {
     private String type;
     private String status;
     private String priority;
-    private Long sprintId;
-    private Long releaseId;
+    private Sprint sprint;
+    private Release release;
     private Long clonedFromId;
     private Integer storyPoints;
     private List<Long> blockedByIds;

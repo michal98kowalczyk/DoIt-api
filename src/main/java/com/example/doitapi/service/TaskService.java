@@ -44,7 +44,7 @@ public class TaskService {
 
     public TaskResponse getTaskResponse(Task task) {
         return TaskResponse.builder().id(task.getId())
-                .releaseId(task.getRelease()!=null ? task.getRelease().getId() : null)
+                .release(task.getRelease()!=null ? task.getRelease(): null)
                 .projectId(task.getProject()!=null ? task.getProject().getId() : null)
                 .clonedFromId(task.getClonedFrom() != null ? task.getClonedFrom().getId() : null)
                 .blockedByIds(task.getBlockedBy()!=null ? getBlockedByIds(task.getBlockedBy()) : null)
@@ -52,7 +52,7 @@ public class TaskService {
                 .reporter(task.getReporter()!=null ? authenticationService.getAuthenticationResponse(task.getReporter()):null)
                 .name(task.getName())
                 .description(task.getDescription())
-                .sprintId(task.getSprint()!=null ? task.getSprint().getId() : null)
+                .sprint(task.getSprint()!=null ? task.getSprint() : null)
                 .type(task.getType())
                 .status(task.getStatus())
                 .priority(task.getPriority().name())

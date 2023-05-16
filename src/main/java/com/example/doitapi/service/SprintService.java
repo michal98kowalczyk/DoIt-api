@@ -23,6 +23,14 @@ public class SprintService {
         sprint.setCreatedDate(currentDateTime);
         sprint.setLastModifiedDate(currentDateTime);
         Sprint saved = null;
+        ArrayList<Sprint> orderedBySprintNumber = (ArrayList<Sprint>) sprintRepository.findAllByProjectIdOrderBySprintNumber(sprint.getProject().getId());
+        if (!orderedBySprintNumber.isEmpty()) {
+            Sprint last = orderedBySprintNumber.get(orderedBySprintNumber.size()-1);
+            sprint.setSprintNumber(last.getSprintNumber()+1);
+        } else {
+            sprint.setSprintNumber(1);
+        }
+
         try {
             saved = sprintRepository.save(sprint);
         } catch (Exception e) {
