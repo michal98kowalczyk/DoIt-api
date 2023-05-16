@@ -4,6 +4,8 @@ package com.example.doitapi.controller;
 import com.example.doitapi.DoitApiApplication;
 import com.example.doitapi.model.Project;
 import com.example.doitapi.model.TaskType;
+import com.example.doitapi.payload.request.RegisterRequest;
+import com.example.doitapi.payload.response.AuthenticationResponse;
 import com.example.doitapi.payload.response.ProjectResponse;
 import com.example.doitapi.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,12 @@ public class ProjectController {
         return ResponseEntity.ok(allProjects);
     }
 
+    @GetMapping("/project/{id}")
+    public ResponseEntity<Project> getProject(@PathVariable("id") String id) {
+        final Project p = projectService.getProject(Long.valueOf(id));
+        return ResponseEntity.ok(p);
+    }
+
 
     @PostMapping("/project")
     public ResponseEntity<ProjectResponse> addProject(@RequestBody Project project) {
@@ -42,5 +50,12 @@ public class ProjectController {
         }
         System.out.println("project saved "+saved.toString());
         return ResponseEntity.ok(saved);
+    }
+
+
+    @DeleteMapping("/project/{id}")
+    public ResponseEntity<ProjectResponse> deleteProject(@PathVariable("id") String id
+    ) {
+        return ResponseEntity.ok(projectService.deleteProject( id));
     }
 }

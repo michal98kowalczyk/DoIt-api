@@ -11,4 +11,6 @@ import java.util.List;
 public interface SprintRepository extends JpaRepository<Sprint, Integer> {
     List<Sprint> findAllByProjectId(Long id);
     List<Sprint> findAllByProjectIdAndReleaseId(Long projectId, Long releaseId);
+    List<Sprint> findAllByProjectIdOrderBySprintNumber(Long id);
+
 }

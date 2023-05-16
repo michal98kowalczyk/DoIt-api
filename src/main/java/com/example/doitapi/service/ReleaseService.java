@@ -41,6 +41,7 @@ public class ReleaseService {
                 .fixVersion(release.getFixVersion())
                 .projectId(release.getProject()!=null ? release.getProject().getId() : null)
                 .createdDate(release.getCreatedDate())
+                .isReleased(release.getIsReleased())
                 .lastModifiedDate(release.getLastModifiedDate())
                 .errorMessage(release.getErrorMessage())
                 .build();

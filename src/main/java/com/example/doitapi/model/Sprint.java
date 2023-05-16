@@ -38,6 +38,10 @@ public class Sprint {
     @JoinColumn(name = "release_id")
     private Release release;
 
+    private Boolean isActive;
+
+    private Boolean isCompleted;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 

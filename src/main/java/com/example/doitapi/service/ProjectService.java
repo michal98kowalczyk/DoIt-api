@@ -4,6 +4,7 @@ import com.example.doitapi.DoitApiApplication;
 import com.example.doitapi.model.Project;
 import com.example.doitapi.model.TaskStatus;
 import com.example.doitapi.model.TaskType;
+import com.example.doitapi.model.User;
 import com.example.doitapi.payload.response.ProjectResponse;
 import com.example.doitapi.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,21 @@ public class ProjectService {
                 .build();
     }
 
-    public ProjectResponse getProjectResponse(Project project) {
-        return ProjectResponse.builder().id(project.getId()).name(project.getName()).errorMessage(project.getErrorMessage()).build();
+    public ProjectResponse getProjectResponse(Project project, String errorMessage, Boolean isSuccess) {
+        return ProjectResponse.builder().id(project.getId()).name(project.getName()).errorMessage(errorMessage).isSuccess(isSuccess).build();
+    }
+
+    public ProjectResponse deleteProject(String id) {
+        Project projectFromDB =  getProject(Long.valueOf(id));
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            projectRepository.delete(projectFromDB);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+        return getProjectResponse(projectFromDB,errorMessage,isSuccess);
     }
 }

@@ -30,6 +30,8 @@ public class Release {
     @Temporal(TemporalType.DATE)
     private Date fixVersion;
 
+    private Boolean isReleased;
+
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;

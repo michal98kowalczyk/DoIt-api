@@ -45,7 +45,7 @@ public class ProjectAssignmentService {
             DoitApiApplication.logger.info(e.getMessage());
         }
 
-        ProjectResponse projectResponse = projectService.getProjectResponse(projectService.getProject(saved.getProject().getId()));
+        ProjectResponse projectResponse = projectService.getProjectResponse(projectService.getProject(saved.getProject().getId()),"",true);
         AuthenticationResponse authenticationResponse = authenticationService.getAuthenticationResponse(authenticationService.getUser(saved.getUser().getId()));
 
         return ProjectAssignmentResponse.builder().id(saved.getId()).project(projectResponse).user(authenticationResponse).accessLevel(saved.getAccessLevel()).position(saved.getPosition()).build();
@@ -70,4 +70,7 @@ public class ProjectAssignmentService {
     }
 
 
+    public ProjectAssignment getProjectAssignemntByUserAndProject(Long projectId, Long userId) {
+        return projectAssignmentRepository.findByProjectIdAndUserId(projectId,userId).get();
+    }
 }
