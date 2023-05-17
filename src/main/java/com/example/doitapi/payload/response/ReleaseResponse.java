@@ -17,7 +17,7 @@ public class ReleaseResponse {
 
     private Long id;
     private Date fixVersion;
-    private Long projectId;
+    private Project project;
 
     private Boolean isReleased;
     private Date createdDate;

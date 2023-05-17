@@ -13,6 +13,7 @@ public interface SprintRepository extends JpaRepository<Sprint, Integer> {
     List<Sprint> findAllByProjectId(Long id);
     List<Sprint> findAllByProjectIdAndReleaseId(Long projectId, Long releaseId);
     List<Sprint> findAllByProjectIdOrderBySprintNumber(Long id);
+    List<Sprint> findAllByReleaseIdAndIsCompleted(Long releaseId, Boolean isCompleted);
 
     void deleteByProjectId(Long projectId);
 

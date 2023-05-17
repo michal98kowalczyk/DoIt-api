@@ -4,20 +4,26 @@ import com.example.doitapi.DoitApiApplication;
 import com.example.doitapi.model.Project;
 import com.example.doitapi.model.ProjectAssignment;
 import com.example.doitapi.model.Release;
+import com.example.doitapi.model.Sprint;
 import com.example.doitapi.payload.response.ProjectResponse;
 import com.example.doitapi.payload.response.ReleaseResponse;
+import com.example.doitapi.payload.response.SprintResponse;
 import com.example.doitapi.repository.ReleaseRepository;
+import com.example.doitapi.repository.SprintRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ReleaseService {
 
     private final ReleaseRepository releaseRepository;
+    private final SprintRepository sprintRepository;
+
 
     public ReleaseResponse addRelease(Release release) {
         final Date currentDateTime = TimeService.getCurrentDateTime();
@@ -39,7 +45,7 @@ public class ReleaseService {
     public ReleaseResponse getReleaseResponse(Release release) {
         return ReleaseResponse.builder().id(release.getId())
                 .fixVersion(release.getFixVersion())
-                .projectId(release.getProject()!=null ? release.getProject().getId() : null)
+                .project(release.getProject()!=null ? release.getProject() : null)
                 .createdDate(release.getCreatedDate())
                 .isReleased(release.getIsReleased())
                 .lastModifiedDate(release.getLastModifiedDate())
@@ -68,5 +74,40 @@ public class ReleaseService {
             System.out.println(errorMessage);
         }
         return isSuccess;
+    }
+
+    public Boolean completeRelease(Long id) {
+        Release fromDb = releaseRepository.findById(id);
+        List<Sprint> sprints = sprintRepository.findAllByReleaseIdAndIsCompleted(id,false);
+        if(!sprints.isEmpty()){
+            return false;
+        }
+
+        final Date currentDateTime = TimeService.getCurrentDateTime();
+        fromDb.setLastModifiedDate(currentDateTime);
+        fromDb.setIsReleased(true);
+        Release saved = null;
+        Boolean isSuccess=true;
+        try {
+            saved = releaseRepository.save(fromDb);
+        } catch (Exception e) {
+            isSuccess=false;
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        return isSuccess;
+    }
+
+    public ReleaseResponse updateRelease(Release release) {
+        Release fromDb = releaseRepository.findById(release.getId());
+        final Date currentDateTime = TimeService.getCurrentDateTime();
+        fromDb.setLastModifiedDate(currentDateTime);
+        fromDb.setFixVersion(release.getFixVersion());
+        Release saved = null;
+        try {
+            saved = releaseRepository.save(fromDb);
+        } catch (Exception e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        return getReleaseResponse(saved);
     }
 }
