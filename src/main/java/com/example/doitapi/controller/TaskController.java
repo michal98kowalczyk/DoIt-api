@@ -26,6 +26,12 @@ public class TaskController {
         return ResponseEntity.ok(tasksByProject);
     }
 
+    @GetMapping("/task/assignee/{id}")
+    public ResponseEntity<ArrayList<TaskResponse>> getAllTasksByAssignee(@PathVariable Long id) {
+        final ArrayList<TaskResponse> tasksByAssignee = taskService.getAllTasksByAssignee(id);
+        return ResponseEntity.ok(tasksByAssignee);
+    }
+
     @GetMapping("/task/project/{projectId}/sprint/{sprintId}")
     public ResponseEntity<ArrayList<TaskResponse>> getAllTasksByProjectAndSprint(@PathVariable Long projectId, @PathVariable Long sprintId) {
         final ArrayList<TaskResponse> tasksByProjectAndRelease = taskService.getAllTasksByProjectAndSprint(projectId, sprintId);

@@ -13,6 +13,8 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     Optional<Task> findById(Long id);
 
     List<Task> findAllByProjectId(Long id);
+
+    List<Task> findAllByAssigneeId(Long id);
     List<Task> findAllByProjectIdAndSprintId(Long projectId, Long sprintId);
 
     void deleteByProjectId(Long projectId);
