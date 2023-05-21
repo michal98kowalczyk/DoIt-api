@@ -18,7 +18,7 @@ import java.util.Date;
 public class CommentResponse {
     private Long id;
     private String body;
-    private Long authorId;
+    private User author;
     private Long taskId;
     private Long parentId;
     private Date createdDate;

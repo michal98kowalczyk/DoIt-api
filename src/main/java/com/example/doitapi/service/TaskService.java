@@ -37,6 +37,9 @@ public class TaskService {
         return getTaskResponse(task);
     }
 
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id).get();
+    }
     public ArrayList<TaskResponse> getAllTasksByProject(Long id) {
         return getTaskResponse((ArrayList<Task>) taskRepository.findAllByProjectId(id));
     }

@@ -20,6 +20,12 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    @GetMapping("/task/{id}")
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+        final Task t = taskService.getTaskById(id);
+        return ResponseEntity.ok(t);
+    }
+
     @GetMapping("/task/project/{id}")
     public ResponseEntity<ArrayList<TaskResponse>> getAllTasksByProject(@PathVariable Long id) {
         final ArrayList<TaskResponse> tasksByProject = taskService.getAllTasksByProject(id);
