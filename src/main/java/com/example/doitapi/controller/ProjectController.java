@@ -8,9 +8,12 @@ import com.example.doitapi.payload.request.RegisterRequest;
 import com.example.doitapi.payload.response.AuthenticationResponse;
 import com.example.doitapi.payload.response.ProjectResponse;
 import com.example.doitapi.service.ProjectService;
+import com.example.doitapi.service.ReleaseService;
+import com.example.doitapi.service.SprintService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -51,7 +54,6 @@ public class ProjectController {
         System.out.println("project saved "+saved.toString());
         return ResponseEntity.ok(saved);
     }
-
 
     @DeleteMapping("/project/{id}")
     public ResponseEntity<ProjectResponse> deleteProject(@PathVariable("id") String id

@@ -54,4 +54,19 @@ public class ReleaseService {
         }
         return releaseResponses;
     }
+
+
+    public Boolean deleteReleasesFromProject(Long projectId) {
+
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            releaseRepository.deleteByProjectId(projectId);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+        return isSuccess;
+    }
 }

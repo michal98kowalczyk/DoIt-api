@@ -5,6 +5,7 @@ import com.example.doitapi.model.Sprint;
 import com.example.doitapi.model.Task;
 import com.example.doitapi.payload.response.SprintResponse;
 import com.example.doitapi.payload.response.TaskResponse;
+import com.example.doitapi.repository.FileRepository;
 import com.example.doitapi.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final FileRepository fileRepository;
 
     private final AuthenticationService authenticationService;
 
@@ -77,6 +80,23 @@ public class TaskService {
             taskResponses.add(getTaskResponse(t));
         }
         return taskResponses;
+    }
+
+    public Boolean deleteTasksFromProject(Long projectId) {
+        ArrayList<TaskResponse> tasks = getAllTasksByProject(projectId);
+        List<Long> ids =  tasks.stream().map(t->t.getId()).collect(Collectors.toList());
+        System.out.println("tasks id to delete "+ids);
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            fileRepository.deleteAllByTaskIdIn(ids);
+            taskRepository.deleteByProjectId(projectId);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+        return isSuccess;
     }
 
 }

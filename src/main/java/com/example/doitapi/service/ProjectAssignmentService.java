@@ -73,4 +73,17 @@ public class ProjectAssignmentService {
     public ProjectAssignment getProjectAssignemntByUserAndProject(Long projectId, Long userId) {
         return projectAssignmentRepository.findByProjectIdAndUserId(projectId,userId).get();
     }
+
+    public Boolean deleteAssignmentsFromProject(Long projectId) {
+        String  errorMessage = "";
+        Boolean isSuccess  = true;
+        try {
+            projectAssignmentRepository.deleteByProjectId(projectId);
+        } catch (RuntimeException  ex ) {
+            errorMessage = ex.getMessage();
+            isSuccess = false;
+            System.out.println(errorMessage);
+        }
+        return isSuccess;
+    }
 }
