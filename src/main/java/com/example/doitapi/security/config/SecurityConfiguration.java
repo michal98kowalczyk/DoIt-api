@@ -38,6 +38,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**")
                 .permitAll()
+                .requestMatchers("/api/v1/file/{id}")
+                .permitAll()
                 .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()

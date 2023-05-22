@@ -26,12 +26,19 @@ public class FileController {
         return ResponseEntity.ok(files);
     }
 
+    @GetMapping("/file/task/{id}")
+    public ResponseEntity<ArrayList<FileResponse>> getAllFilesByTask(@PathVariable("id") String id) {
+        final ArrayList<FileResponse> files = fileService.getAllFilesByTask(Long.valueOf(id));
+        return ResponseEntity.ok(files);
+    }
+
+
     @GetMapping("/file/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id) {
 
 
         File file = fileService.getFile(id);
-        System.out.println("file "+file.getName());
+        System.out.println("file " + file.getName());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
                 .body(file.getContent());
@@ -48,7 +55,7 @@ public class FileController {
         if (saved == null) {
             return (ResponseEntity<FileResponse>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body(FileResponse.builder().errorMessage("Error occured").build());
         }
-        System.out.println("file saved "+saved.toString());
+        System.out.println("file saved " + saved.toString());
         return ResponseEntity.ok(saved);
     }
 
@@ -56,7 +63,7 @@ public class FileController {
     public ResponseEntity<ArrayList<FileResponse>> addFile(@RequestParam("files") ArrayList<MultipartFile> files, @RequestParam("user") Long userId, @RequestParam("task") Long taskId) {
         ArrayList<FileResponse> saved = null;
         try {
-            saved = fileService.addFiles(files,userId,taskId);
+            saved = fileService.addFiles(files, userId, taskId);
         } catch (Exception e) {
             DoitApiApplication.logger.info(e.getMessage());
         }
@@ -68,4 +75,17 @@ public class FileController {
 
         return ResponseEntity.ok(saved);
     }
+
+    @DeleteMapping("/file/{id}")
+    public ResponseEntity<Boolean> deleteFile(@PathVariable("id") String id) {
+        Boolean saved=true;
+        try {
+            saved = fileService.deleteFile(Long.valueOf(id));
+        } catch (Exception e) {
+            saved=false;
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        return ResponseEntity.ok(saved);
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.example.doitapi.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,8 @@ import java.util.List;
 @Table(name = "tasks")
 @Data
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Task {
 
     @Id

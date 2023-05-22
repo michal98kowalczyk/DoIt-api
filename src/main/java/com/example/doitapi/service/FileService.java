@@ -55,6 +55,7 @@ public class FileService {
         return getFileResponse(file);
     }
 
+    @Transactional
     public ArrayList<FileResponse> getAllFilesByTask(Long id) {
         return getFileResponse((ArrayList<File>) fileRepository.findAllByTaskId(id));
     }
@@ -98,14 +99,27 @@ public class FileService {
 
     public ArrayList<FileResponse> addFiles(ArrayList<MultipartFile> files, Long userId, Long taskId) {
         ArrayList<FileResponse> responses = new ArrayList<>();
-        files.forEach(f-> {
+        files.forEach(f -> {
             try {
-                responses.add(addFile(f,userId,taskId));
+                responses.add(addFile(f, userId, taskId));
             } catch (IOException e) {
                 DoitApiApplication.logger.info(e.getMessage());
             }
         });
         return responses;
+    }
+
+    @Transactional
+    public Boolean deleteFile(Long id) {
+        Boolean isSuccess = true;
+        try {
+            File f = fileRepository.findById(id).get();
+            fileRepository.delete(f);
+
+        } catch (RuntimeException e) {
+            isSuccess = false;
+        }
+        return isSuccess;
     }
 }
 
