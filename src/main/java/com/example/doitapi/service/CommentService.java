@@ -3,9 +3,11 @@ package com.example.doitapi.service;
 import com.example.doitapi.DoitApiApplication;
 import com.example.doitapi.model.Comment;
 import com.example.doitapi.model.Task;
+import com.example.doitapi.model.User;
 import com.example.doitapi.payload.response.CommentResponse;
 import com.example.doitapi.payload.response.TaskResponse;
 import com.example.doitapi.repository.CommentRepository;
+import com.example.doitapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,12 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
     public CommentResponse addComment(Comment comment) {
         final Date currentDateTime = TimeService.getCurrentDateTime();
+        User author = userRepository.findById(comment.getAuthor().getId()).get();
+        comment.setAuthor(author);
         comment.setCreatedDate(currentDateTime);
         comment.setLastModifiedDate(currentDateTime);
         Comment saved = null;
@@ -42,7 +47,7 @@ public class CommentService {
                 .body(comment.getBody())
                 .taskId(comment.getTask()!=null ? comment.getTask().getId() : null)
                 .parentId(comment.getParent()!=null ? comment.getParent().getId() : null)
-                .authorId(comment.getAuthor()!=null ? comment.getAuthor().getId() : null)
+                .author(comment.getAuthor()!=null ? comment.getAuthor() : null)
                 .createdDate(comment.getCreatedDate())
                 .lastModifiedDate(comment.getLastModifiedDate())
                 .errorMessage(comment.getErrorMessage())

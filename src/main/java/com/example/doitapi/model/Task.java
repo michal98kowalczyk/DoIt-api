@@ -47,7 +47,8 @@ public class Task {
 //
 //    @OneToMany(mappedBy = "task")
 //    private List<File> files;
-
+    @ElementCollection
+    List<String> labels;
 
     @ManyToOne
     @JoinColumn(name = "sprint_id", referencedColumnName = "id")

@@ -19,7 +19,8 @@ public class TaskResponse {
     private Long id;
     private String name;
     private String description;
-    private Long projectId;
+    private Project project;
+    List<String> labels;
     private AuthenticationResponse assignee;
     private AuthenticationResponse reporter;
     private String type;

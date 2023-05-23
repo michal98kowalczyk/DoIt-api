@@ -37,8 +37,15 @@ public class TaskService {
         return getTaskResponse(task);
     }
 
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id).get();
+    }
     public ArrayList<TaskResponse> getAllTasksByProject(Long id) {
         return getTaskResponse((ArrayList<Task>) taskRepository.findAllByProjectId(id));
+    }
+
+    public ArrayList<TaskResponse> getAllTasksByAssignee(Long id) {
+        return getTaskResponse((ArrayList<Task>) taskRepository.findAllByAssigneeId(id));
     }
 
     public ArrayList<TaskResponse> getAllTasksByProjectAndSprint(Long projectId, Long sprintId) {
@@ -48,12 +55,13 @@ public class TaskService {
     public TaskResponse getTaskResponse(Task task) {
         return TaskResponse.builder().id(task.getId())
                 .release(task.getRelease()!=null ? task.getRelease(): null)
-                .projectId(task.getProject()!=null ? task.getProject().getId() : null)
+                .project(task.getProject()!=null ? task.getProject() : null)
                 .clonedFromId(task.getClonedFrom() != null ? task.getClonedFrom().getId() : null)
                 .blockedByIds(task.getBlockedBy()!=null ? getBlockedByIds(task.getBlockedBy()) : null)
                 .assignee(task.getAssignee()!=null ? authenticationService.getAuthenticationResponse(task.getAssignee()) : null)
                 .reporter(task.getReporter()!=null ? authenticationService.getAuthenticationResponse(task.getReporter()):null)
                 .name(task.getName())
+                .labels(task.getLabels())
                 .description(task.getDescription())
                 .sprint(task.getSprint()!=null ? task.getSprint() : null)
                 .type(task.getType())

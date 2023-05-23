@@ -5,8 +5,10 @@ import com.example.doitapi.DoitApiApplication;
 import com.example.doitapi.model.Project;
 import com.example.doitapi.model.ProjectAssignment;
 import com.example.doitapi.model.Release;
+import com.example.doitapi.model.Sprint;
 import com.example.doitapi.payload.response.ProjectResponse;
 import com.example.doitapi.payload.response.ReleaseResponse;
+import com.example.doitapi.payload.response.SprintResponse;
 import com.example.doitapi.service.ReleaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,35 @@ public class ReleaseController {
             return (ResponseEntity<ReleaseResponse>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ReleaseResponse.builder().errorMessage("Error occured").build());
         }
         System.out.println("project saved "+saved.toString());
+        return ResponseEntity.ok(saved);
+    }
+
+    @PatchMapping("/release")
+    public ResponseEntity<ReleaseResponse> updateRelease(@RequestBody Release release) {
+        ReleaseResponse saved = null;
+        try {
+            saved = releaseService.updateRelease(release);
+        } catch (Exception e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        if (saved == null) {
+            return (ResponseEntity<ReleaseResponse>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ReleaseResponse.builder().errorMessage("Error occured").build());
+        }
+        System.out.println("project saved "+saved.toString());
+        return ResponseEntity.ok(saved);
+    }
+
+    @PatchMapping("/release/complete/{id}")
+    public ResponseEntity<Boolean> completeRelease(@PathVariable("id") String id) {
+        Boolean saved = null;
+        try {
+            saved = releaseService.completeRelease(Long.valueOf(id));
+        } catch (Exception e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        if (saved == null) {
+            return (ResponseEntity<Boolean>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+        }
         return ResponseEntity.ok(saved);
     }
 }
