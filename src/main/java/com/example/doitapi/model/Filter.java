@@ -24,10 +24,12 @@ public class Filter {
     @Enumerated(EnumType.STRING)
     private FilterType type;
 
-    @ManyToOne
-    @JoinColumn(name = "dashboard_id")
-    private Dashboard dashboard;
+//    @ManyToOne
+//    @JoinColumn(name = "dashboard_id")
+//    private Dashboard dashboard;
 
+
+//    assignee => user.id, release=>release.id/fixVersion, label=> haslabel
     @ElementCollection
     List<String> filters;
 

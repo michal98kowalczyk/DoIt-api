@@ -3,6 +3,7 @@ package com.example.doitapi.controller;
 import com.example.doitapi.DoitApiApplication;
 import com.example.doitapi.model.Sprint;
 import com.example.doitapi.model.Task;
+import com.example.doitapi.model.User;
 import com.example.doitapi.payload.response.SprintResponse;
 import com.example.doitapi.payload.response.TaskResponse;
 import com.example.doitapi.service.TaskService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -54,6 +56,51 @@ public class TaskController {
         }
         if (saved == null) {
             return (ResponseEntity<TaskResponse>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body(TaskResponse.builder().errorMessage("Error occured").build());
+        }
+        System.out.println("project saved "+saved.toString());
+        return ResponseEntity.ok(saved);
+    }
+
+    @PatchMapping("/task")
+    public ResponseEntity<TaskResponse> updateTask(@RequestBody Task task) {
+        TaskResponse saved = null;
+        try {
+            saved = taskService.updateTask(task);
+        } catch (Exception e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        if (saved == null) {
+            return (ResponseEntity<TaskResponse>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body(TaskResponse.builder().errorMessage("Error occured").build());
+        }
+        System.out.println("project saved "+saved.toString());
+        return ResponseEntity.ok(saved);
+    }
+
+    @PatchMapping("/task/blocked/{id}")
+    public ResponseEntity<Boolean> addBlockedBy(@PathVariable("id") String id,@RequestBody List<Long> taskIds) {
+        System.out.println("tasks ids "+taskIds);
+        Boolean saved = null;
+        try {
+            saved = taskService.addBlockedBy(Long.valueOf(id),taskIds);
+        } catch (Exception e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        if (saved == null) {
+            return (ResponseEntity<Boolean>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+        }
+        return ResponseEntity.ok(saved);
+    }
+
+    @PostMapping("/task/clone/{id}")
+    public ResponseEntity<Task> clone(@PathVariable("id") String id,@RequestBody User reporter) {
+        Task saved = null;
+        try {
+            saved = taskService.clone(Long.valueOf(id), reporter);
+        } catch (Exception e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+        if (saved == null) {
+            return (ResponseEntity<Task>) ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Task.builder().errorMessage("Error occured").build());
         }
         System.out.println("project saved "+saved.toString());
         return ResponseEntity.ok(saved);

@@ -33,9 +33,19 @@ public class Dashboard {
 
     Boolean isDefault;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "filters",
+            joinColumns = @JoinColumn(name = "dashboard_id"),
+            inverseJoinColumns = @JoinColumn(name = "filter_id"))
+    private List<Filter> filters;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
+
+    @Transient
+    private String errorMessage;
 }
