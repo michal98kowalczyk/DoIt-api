@@ -41,4 +41,10 @@ public class DashboardService {
         System.out.println("projectIds "+projectIds);
         return dashboardRepository.findAllByProjectIdIn(projectIds);
     }
+
+    public Dashboard findById(Long dId) {
+        return dashboardRepository.findById(dId).get();
+    }
+
+
 }

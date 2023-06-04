@@ -46,4 +46,16 @@ public class DashboardController {
 
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/dashboard/i/{dId}")
+    public ResponseEntity<Dashboard> findById(@PathVariable("dId") String dId) {
+        Dashboard result = null;
+        try {
+            result = dashboardService.findById(Long.valueOf(dId));
+        } catch (Exception e) {
+            DoitApiApplication.logger.info(e.getMessage());
+        }
+
+        return ResponseEntity.ok(result);
+    }
 }
